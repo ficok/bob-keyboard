@@ -1,0 +1,155 @@
+units:
+  # Proxy Spacing Variables
+  kx: cx
+  ky: cy
+  # Padding Variables
+  px: kx + 2
+  py: ky + 2
+points:
+  zones:
+    # The primary 6x4 key matrix, plus 3 modifiers.
+    matrix:
+      # Choc spacing
+      key:
+        padding: 1ky
+        spread: 1kx
+      columns:
+        # Hide the first two mods and the last mod.
+        # Provide a Sofle-like column stagger.
+        outer:
+          rows.mod.skip: true
+        pinky:
+          rows.mod.skip: true
+        ring:
+          key.stagger: 5
+          rows.mod.skip: true
+        middle:
+          key.stagger: 2.5
+        index:
+          key.stagger: -2.5
+        inner:
+          rows.mod.skip: true
+          key.stagger: -2.5
+      rows:
+        # Four main rows, one partial row.
+        mod:
+        bottom:
+        home:
+        top:
+    # Thumb cluster for Layer and Space keys.
+    thumbs:
+      # Choc spacing
+      key:
+        padding: 1ky
+        spread: 1kx
+      # Place thumbs where the inner mod would go.
+      anchor:
+        ref: matrix_inner_mod
+        shift: [2, -4]
+      columns:
+        # Fan thumbs out by -15 degrees.
+        layer:
+          key.splay: -15
+        # Spacebar uses a 1.5 wide key.
+        shft:
+          key:
+            shift: [-5, -19]
+        space:
+          key:
+            width: 1.5kx
+            splay: 75
+            shift: [2, 13]
+
+      rows:
+        # Thumbs only have one row.
+        cluster:
+  # Mirror keyboard halves with a moderate rotation.
+  rotate: -11
+  mirror: &mirror
+    ref: matrix_inner_top
+    distance: 5kx
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      size: [px, py]
+  keys:
+    - what: rectangle
+      where: true
+      size: [kx-0.5,ky-0.5]
+  board:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_outer_top
+          shift: [-0.5px,0.5py]
+        - ref: matrix_ring_top
+          shift: [-0.5px,0.5py]
+        - ref: matrix_middle_top
+          shift: [-0.5px,0.5py]
+        - ref: matrix_middle_top
+          shift: [0.5px,0.5py]
+        - ref: matrix_inner_top
+          shift: [0.5px,0.5py]
+        - ref: mirror_matrix_inner_top
+          shift: [0.5px,0.5py]
+        - ref: mirror_matrix_middle_top
+          shift: [0.5px,0.5py]
+        - ref: mirror_matrix_middle_top
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_ring_top
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_outer_top
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_outer_bottom
+          shift: [-0.5px,-0.5py]
+        - ref: mirror_matrix_middle_mod
+          shift: [-0.5px,-0.5py]
+        - ref: mirror_thumbs_shft_cluster
+          shift: [-1px,-0.3py]
+        - ref: mirror_thumbs_space_cluster
+          shift: [-2.1px,-0.2py]
+        - ref: thumbs_space_cluster
+          shift: [-2.1px,-0.2py]
+        - ref: thumbs_shft_cluster
+          shift: [-1px,-0.3py]
+        - ref: matrix_middle_mod
+          shift: [-0.5px,-0.5py]
+        - ref: matrix_outer_bottom
+          shift: [-0.5px,-0.5py]
+      fillet: 2.5
+  combo:
+    - name: board
+    - operation: subtract
+      name: keys
+pcbs:
+  bob:
+    outlines:
+      main:
+        outline: board
+    footprints:
+      choc_hotswap:
+        what: choc
+        where: true
+        params:
+          keycaps: true
+          reverse: false
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+      promicro:
+        what: promicro
+        params:
+          orientation: "down"
+        where:
+          ref.aggregate.parts: [matrix_inner_top, mirror_matrix_inner_top]
+          shift: [0,0]
+          rotate: -90
