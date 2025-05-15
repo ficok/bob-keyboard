@@ -16,7 +16,13 @@ points:
       columns:
         # Hide the first two mods and the last mod.
         # Provide a Sofle-like column stagger.
+        macro:
+          key:
+            splay: 12
+          rows.mod.skip: true
         outer:
+          key:
+            splay: -12
           rows.mod.skip: true
         pinky:
           rows.mod.skip: true
@@ -33,7 +39,9 @@ points:
       rows:
         # Four main rows, one partial row.
         mod:
+          shift: [-5,-1]
         bottom:
+          shift: [5, 5]
         home:
         top:
     # Thumb cluster for Layer and Space keys.
@@ -49,11 +57,13 @@ points:
       columns:
         # Fan thumbs out by -15 degrees.
         layer:
-          key.splay: -15
+          key:
+            splay: -10
+            shift: [0, 3]
         # Spacebar uses a 1.5 wide key.
         shft:
           key:
-            shift: [-5, -19]
+            shift: [-10, -19]
         space:
           key:
             width: 1.5kx
@@ -81,6 +91,8 @@ outlines:
     - what: polygon
       operation: stack
       points:
+        - ref: matrix_macro_top
+          shift: [-0.5px, 0.5px]
         - ref: matrix_outer_top
           shift: [-0.5px,0.5py]
         - ref: matrix_ring_top
@@ -101,8 +113,12 @@ outlines:
           shift: [-0.5px,0.5py]
         - ref: mirror_matrix_outer_top
           shift: [-0.5px,0.5py]
-        - ref: mirror_matrix_outer_bottom
+        - ref: mirror_matrix_macro_top
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_macro_bottom
           shift: [-0.5px,-0.5py]
+        - ref: mirror_matrix_outer_bottom
+          shift: [-0.5px,-0.7py]
         - ref: mirror_matrix_middle_mod
           shift: [-0.5px,-0.5py]
         - ref: mirror_thumbs_shft_cluster
@@ -116,7 +132,9 @@ outlines:
         - ref: matrix_middle_mod
           shift: [-0.5px,-0.5py]
         - ref: matrix_outer_bottom
-          shift: [-0.5px,-0.5py]
+          shift: [-0.5px,-0.7py]
+        - ref: matrix_macro_bottom
+          shift: [-0.5px, -0.5py]
       fillet: 2.5
   combo:
     - name: board
